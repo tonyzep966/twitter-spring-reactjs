@@ -78,6 +78,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             user.setFullName(username);
             user.setBirthday(birthday);
             user.setRole("USER");
+            // TonyZep966 - Bug fixed, to prevent from throwing null exception and get start when new user created.
+            user.setActive(false);
+            user.setLikeCount(0L);
+            user.setMediaTweetCount(0L);
+            user.setTweetCount(0L);
+            user.setProfileCustomized(false);
+            user.setProfileStarted(false);
             userRepository.save(user);
             return "User data checked.";
         }
@@ -99,13 +106,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public String sendRegistrationCode(String email) {
         UserCommonProjection user = userRepository.findCommonUserByEmail(email)
                 .orElseThrow(() -> new ApiRequestException("User not found", HttpStatus.NOT_FOUND));
-        userRepository.updateActivationCode(UUID.randomUUID().toString().substring(0, 7), user.getId());
-
+        // TonyZep966 - Fix a bug, where cannot see activation code in email
+        String activationCode = UUID.randomUUID().toString().substring(0, 7);
+        userRepository.updateActivationCode(activationCode, user.getId());
         String subject = "Registration code";
         String template = "registration-template";
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("fullName", user.getFullName());
-        attributes.put("registrationCode", user.getActivationCode());
+        attributes.put("registrationCode", activationCode);
         mailSender.sendMessageHtml(user.getEmail(), subject, template, attributes);
         return "Registration code sent successfully";
     }
@@ -166,13 +174,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public String sendPasswordResetCode(String email) {
         UserCommonProjection user = userRepository.findCommonUserByEmail(email)
                 .orElseThrow(() -> new ApiRequestException("Email not found", HttpStatus.NOT_FOUND));
-        userRepository.updatePasswordResetCode(UUID.randomUUID().toString().substring(0, 7), user.getId());
-
+        // TonyZep966 - Fix bug here too, for code not seen in email
+        String resetCode = UUID.randomUUID().toString().substring(0, 7);
+        userRepository.updatePasswordResetCode(resetCode, user.getId());
         String subject = "Password reset";
         String template = "password-reset-template";
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("fullName", user.getFullName());
-        attributes.put("passwordResetCode", user.getPasswordResetCode());
+        attributes.put("passwordResetCode", resetCode);
         mailSender.sendMessageHtml(user.getEmail(), subject, template, attributes);
         return "Reset password code is send to your E-mail";
     }
