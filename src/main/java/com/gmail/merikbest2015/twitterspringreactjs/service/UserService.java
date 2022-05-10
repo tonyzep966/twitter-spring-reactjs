@@ -29,7 +29,7 @@ public interface UserService {
 
     List<UserProjection> searchUsersByUsername(String username);
 
-    Boolean startUseTwitter();
+    Boolean startUseTwitter(Long userId);
 
     Page<TweetUserProjection> getUserTweets(Long userId, Pageable pageable);
 

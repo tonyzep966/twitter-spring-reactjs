@@ -74,8 +74,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public Boolean startUseTwitter() {
-        Long userId = authenticationService.getAuthenticatedUserId();
+    public Boolean startUseTwitter(Long userId) {
+        Long authenticatedUserId = authenticationService.getAuthenticatedUserId();
         userRepository.updateProfileStarted(userId);
         return true;
     }

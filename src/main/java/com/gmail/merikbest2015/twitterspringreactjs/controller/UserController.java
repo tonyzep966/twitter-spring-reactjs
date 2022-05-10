@@ -49,9 +49,10 @@ public class UserController {
         return ResponseEntity.ok(userMapper.searchUsersByUsername(username));
     }
 
-    @GetMapping("/start")
-    public ResponseEntity<Boolean> startUseTwitter() {
-        return ResponseEntity.ok(userMapper.startUseTwitter());
+    @GetMapping("/{userId}/start")
+    public ResponseEntity<Boolean> startUseTwitter(@PathVariable Long userId) {
+        // TonyZep966 Bug fix: call(UserApi.startUseTwitter, payload) get 404, due to this API doesn't have userId as parameter
+        return ResponseEntity.ok(userMapper.startUseTwitter(userId));
     }
 
     @GetMapping("/{userId}/tweets")

@@ -71,8 +71,8 @@ public class UserMapper {
         return basicMapper.convertToResponse(authUserProjection, AuthUserResponse.class);
     }
 
-    public Boolean startUseTwitter() {
-        return userService.startUseTwitter();
+    public Boolean startUseTwitter(Long userId) {
+        return userService.startUseTwitter(userId);
     }
 
     public TweetHeaderResponse<TweetUserResponse> getUserTweets(Long userId, Pageable pageable) {
