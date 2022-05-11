@@ -1,5 +1,6 @@
 package com.gmail.merikbest2015.twitterspringreactjs.service.impl;
 
+import com.gmail.merikbest2015.twitterspringreactjs.configuration.ProxyConfiguration;
 import com.gmail.merikbest2015.twitterspringreactjs.exception.ApiRequestException;
 import com.gmail.merikbest2015.twitterspringreactjs.model.*;
 import com.gmail.merikbest2015.twitterspringreactjs.repository.*;
@@ -20,12 +21,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -50,6 +54,8 @@ public class TweetServiceImpl implements TweetService {
     private final BookmarkRepository bookmarkRepository;
     private final ChatMessageRepository chatMessageRepository;
     private final RestTemplate restTemplate;
+
+    private final ProxyConfiguration proxyConfiguration;
 
     @Value("${google.api.url}")
     private String googleApiUrl;
@@ -510,6 +516,12 @@ public class TweetServiceImpl implements TweetService {
 
                 if (youTubeMatcher.find()) {
                     youTubeVideoId = youTubeMatcher.group();
+                }
+                if (proxyConfiguration.getProxyEnabled()) {
+                    Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyConfiguration.getProxyHost(), proxyConfiguration.getProxyPort()));
+                    SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+                    requestFactory.setProxy(proxy);
+                    restTemplate.setRequestFactory(requestFactory);
                 }
                 String youtubeUrl = String.format(googleApiUrl, youTubeVideoId, googleApiKey);
                 String youTubeVideData = restTemplate.getForObject(youtubeUrl, String.class);
