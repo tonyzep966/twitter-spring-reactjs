@@ -198,27 +198,27 @@ const UserPage: FC<SnackbarProps & HoverActionProps> = (
         }
     };
 
-    const showTweetCount = (): string => { // +
+    const showTweetCount = (): string => {
         if (userProfile !== undefined) {
             if (activeTab === 2) {
-                return `${userProfile.mediaTweetCount} ${(userProfile.mediaTweetCount === 1) ? "Photo & video" : "Photos & videos"}`; // +
+                return `${userProfile.mediaTweetCount} ${(userProfile.mediaTweetCount === 1) ? "Photo & video" : "Photos & videos"}`;
             } else if (activeTab === 3) {
-                return `${userProfile.likeCount} ${(userProfile.likeCount === 1) ? "Like" : "Likes"}`; // +
+                return `${userProfile.likeCount} ${(userProfile.likeCount === 1) ? "Like" : "Likes"}`;
             } else {
-                return `${userProfile.tweetCount} ${(userProfile.tweetCount === 1) ? "Tweet" : "Tweets"}`; // +
+                return `${userProfile.tweetCount} ${(userProfile.tweetCount === 1) ? "Tweet" : "Tweets"}`;
             }
         }
         return "";
     };
 
-    const handleShowTweets = (callback: () => void): void => { // +
+    const handleShowTweets = (callback: () => void): void => {
         window.scrollTo(0, 0);
         setPage(0);
         dispatch(resetUserTweets());
         callback();
     };
 
-    const handleChange = (event: ChangeEvent<{}>, newValue: number): void => { // +
+    const handleChange = (event: ChangeEvent<{}>, newValue: number): void => {
         setActiveTab(newValue);
     };
 
@@ -258,22 +258,22 @@ const UserPage: FC<SnackbarProps & HoverActionProps> = (
         }
     };
 
-    const handleShowUserTweets = (): void => { // +
+    const handleShowUserTweets = (): void => {
         dispatch(fetchUserTweets({userId: params.id, page: 0}));
         setPage(prevState => prevState + 1);
     };
 
-    const handleShowUserRetweetsAndReplies = (): void => { // +
+    const handleShowUserRetweetsAndReplies = (): void => {
         dispatch(fetchUserRetweetsAndReplies({userId: params.id, page: 0}));
         setPage(prevState => prevState + 1);
     };
 
-    const handleShowMediaTweets = (): void => { // +
+    const handleShowMediaTweets = (): void => {
         dispatch(fetchUserMediaTweets({userId: params.id, page: 0}));
         setPage(prevState => prevState + 1);
     };
 
-    const handleShowLikedTweets = (): void => { // +
+    const handleShowLikedTweets = (): void => {
         dispatch(fetchUserLikedTweets({userId: params.id, page: 0}));
         setPage(prevState => prevState + 1);
     };
@@ -356,7 +356,6 @@ const UserPage: FC<SnackbarProps & HoverActionProps> = (
                             )}
                         </div>
                         <div className={classes.info}>
-                            {/* TODO test Link */}
                             <Link to={{
                                 pathname: `${PROFILE_PHOTO}/${userProfile?.id}`,
                                 state: {
@@ -364,7 +363,6 @@ const UserPage: FC<SnackbarProps & HoverActionProps> = (
                                     imageSrc: userProfile?.avatar?.src ? userProfile?.avatar.src : DEFAULT_PROFILE_IMG
                                 },
                             }}>
-                                {/* TODO test DEFAULT_PROFILE_IMG */}
                                 <div style={{display: "inline-block"}}>
                                     <Avatar
                                         src={userProfile !== undefined ? userProfile?.avatar?.src ? userProfile?.avatar.src : DEFAULT_PROFILE_IMG : undefined}>
@@ -603,6 +601,7 @@ const UserPage: FC<SnackbarProps & HoverActionProps> = (
                                     <Typography variant={"subtitle1"} component={"div"} className={classes.description}>
                                         {"You have muted Tweets from this account. "}
                                         <Typography
+                                            id={"unmuteUser"}
                                             className={classes.unfollowLink}
                                             onClick={onMuteUser}
                                             variant={"subtitle1"}
