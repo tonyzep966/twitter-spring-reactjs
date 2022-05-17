@@ -9,7 +9,8 @@ import {
 import {
     BaseListResponse,
     ListResponse,
-    ListsOwnerMemberResponse, ListUserResponse,
+    ListsOwnerMemberResponse,
+    ListUserResponse,
     PinnedListResponse,
     SimpleListResponse
 } from "../../store/types/lists";
@@ -139,7 +140,7 @@ export const mockUser = {
     "country": "UA",
     "gender": "Cat",
     "language": "Ukrainian - українська",
-    "birthday": null,
+    "birthday": "Jan 15, 2005",
     "registrationDate": "2021-08-01T23:34:32",
     "tweetCount": 4,
     "mediaTweetCount": 25,
@@ -211,7 +212,7 @@ export const createMockMyProfile = (followersSize: number = 1, followingSize: nu
         "about": "Hello twitter!",
         "website": "https://www.google.com",
         "country": "UA",
-        "birthday": null,
+        "birthday": "Jan 15, 2005",
         "registrationDate": "2021-08-01T23:34:32",
         "tweetCount": 4,
         "mediaTweetCount": 25,
